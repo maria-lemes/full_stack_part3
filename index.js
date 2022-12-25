@@ -1,6 +1,27 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
+const mongoose = require('mongoose')
+
+
+const url = `mongodb+srv://fullstack_user:znrp8sJBywFeYJ9k@cluster0.40uxlhm.mongodb.net/Phonebook?retryWrites=true&w=majority`
+
+mongoose.connect(url)
+
+const personSchema = new mongoose.Schema({
+  name: String,
+  number: String
+})
+
+personSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
+
+const Person = mongoose.model('Person', personSchema)
 
 
 const app = express()
@@ -40,7 +61,9 @@ let persons = [
 
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Person.find({}).then(persons => {
+    response.json(persons)
+  }) 
 })
 
 app.get('/info', (request, response) => {

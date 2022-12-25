@@ -6,7 +6,7 @@ if (process.argv.length < 3) {
 }
 
 const password = process.argv[2]
-//const create = (process.argv.length == 5)
+
 
 const url = `mongodb+srv://fullstack_user:${password}@cluster0.40uxlhm.mongodb.net/Phonebook?retryWrites=true&w=majority`
 
